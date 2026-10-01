@@ -12,6 +12,7 @@ type Phase = "input" | "loading" | "ready";
 interface ResolveResponse {
   placeId?: string;
   reviewUrl?: string;
+  label?: string | null;
   error?: string;
 }
 
@@ -31,6 +32,7 @@ export function Generator() {
   const [error, setError] = useState<string | null>(null);
   const [reviewUrl, setReviewUrl] = useState<string | null>(null);
   const [businessName, setBusinessName] = useState("");
+  const [foundName, setFoundName] = useState<string | null>(null);
   const [qr, setQr] = useState<string | null>(null);
   const [busyTemplate, setBusyTemplate] = useState<string | null>(null);
 
@@ -53,14 +55,17 @@ export function Generator() {
       const data = (await res.json()) as ResolveResponse;
       if (!res.ok || !data.placeId || !data.reviewUrl)
         return fail(data.error || "Couldn't read that link.");
-      await showResult(data.placeId, data.reviewUrl);
+      await showResult(data.placeId, data.reviewUrl, data.label || undefined);
     } catch {
       fail("Couldn't reach the lookup service. Check your connection and try again.");
     }
   }
 
-  async function showResult(placeId: string, url: string) {
+  async function showResult(placeId: string, url: string, label?: string) {
     setReviewUrl(url);
+    setFoundName(label ?? null);
+    // Pre-fill the template name from the link's business name (free, from the URL slug).
+    if (label) setBusinessName(label);
     setPhase("ready");
     const dataUrl = await qrDataUrl(url, 1024);
     setQr(dataUrl);
@@ -72,6 +77,7 @@ export function Generator() {
     setReviewUrl(null);
     setQr(null);
     setError(null);
+    setFoundName(null);
   }
 
   function handleDownloadQr() {
@@ -170,6 +176,11 @@ export function Generator() {
               {/* Verify + customize */}
               <div className="flex-1">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">Step 1 — Verify</p>
+                {foundName && (
+                  <p className="mt-2 text-[15px] text-ink">
+                    Found: <strong className="font-semibold">{foundName}</strong>
+                  </p>
+                )}
                 <a
                   href={reviewUrl}
                   target="_blank"

@@ -23,5 +23,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({
     placeId: resolved.placeId,
     reviewUrl: reviewUrl(resolved.placeId),
+    // Business name taken from the link's /maps/place/<slug> — free, no API.
+    label: resolved.label ?? null,
   });
 }

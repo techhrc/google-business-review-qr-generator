@@ -21,7 +21,18 @@ https://search.google.com/local/writereview?placeid=YOUR_PLACE_ID
 
 ## Zero-cost design
 
-The site is **link-only**: it accepts a Google Maps / Google Business / review link and turns it into a review QR code. A pasted link either carries the Place ID directly or is a short link followed server-side — both are free and need **no API key at all**. No Google Places API is used anywhere, so there is no billing, no quota, and no key to configure. This keeps the tool free forever, at any volume.
+The site is **link-only**: paste a Google Maps / Google Business / review link and get a review QR code.
+
+- Links that already carry a Place ID (review links, `place_id` URLs, raw IDs) resolve with **no API at all**.
+- Maps *share* links (`maps.app.goo.gl`, `g.page`, `share.google`) are followed server-side; the business name and coordinates are read free from the resulting `/maps/place/<slug>` URL, and the Place ID is resolved with Places Text Search using an **ID-only** field mask:
+
+```text
+places.id
+```
+
+That's Google's **Text Search Essentials (IDs Only)** tier — unlimited and free. The code deliberately never requests `displayName` or `formattedAddress` (those would flip the call to paid Pro). The name shown in the UI comes free from the link's URL slug, not the API.
+
+Only share-link resolution needs `GOOGLE_PLACES_API_KEY` (server-side). Everything else works keyless. This keeps the tool free forever, at any volume.
 
 ## Tech stack
 
@@ -46,9 +57,8 @@ Copy `.env.example` to `.env`:
 
 | Variable | Required | Description |
 |---|---|---|
+| `GOOGLE_PLACES_API_KEY` | Only for share-link resolution | Google Cloud API key with **Places API (New)** → Text Search enabled. **Server-side only** — never prefix with `NEXT_PUBLIC_`. Review links, `place_id` URLs, and raw Place IDs work without it. |
 | `NEXT_PUBLIC_SITE_URL` | Yes | Canonical site URL, e.g. `https://googlereviewqr.vercel.app`. Used for canonical tags, sitemap, and social metadata. |
-
-No API keys are needed — link resolution is fully keyless.
 
 ### Scripts
 
@@ -64,8 +74,18 @@ npm run lint   # eslint
 1. Push this repo to GitHub (or import the folder directly).
 2. In Vercel, **Add New → Project → Import** the repository.
 3. Add environment variables:
+   - `GOOGLE_PLACES_API_KEY` = your key (only needed for Maps share-link resolution)
    - `NEXT_PUBLIC_SITE_URL` = your `https://<project>.vercel.app` URL
-4. Deploy. That's it — no build settings to change, no database to provision, no API keys.
+4. Deploy. That's it — no build settings to change, no database to provision.
+
+### Getting a Google Places API key (free tier)
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/) → create/select a project.
+2. **APIs & Services → Library** → enable **Places API (New)**.
+3. **APIs & Services → Credentials** → Create Credentials → API key.
+4. Restrict the key: under *API restrictions* select **Places API (New)** only. Add HTTP-referrer or IP restrictions for production.
+
+The site only ever requests `places.id`, which bills at the free Essentials (IDs Only) tier with no usage cap — the key costs nothing to run.
 
 ## API routes
 
@@ -92,14 +112,14 @@ src/
     layout.tsx          # metadata, JSON-LD, fonts
     opengraph-image.tsx # dynamic 1200×630 OG image
     robots.ts / sitemap.ts
-    api/resolve/route.ts  # keyless link → Place ID resolver
+    api/resolve/route.ts  # link → Place ID resolver (keyless except share-link fallback)
     api/resolve/route.ts  # link / Place ID resolver
   components/
     Generator.tsx       # search + paste-link tabs, verify step, QR display, template downloads
     TemplateGallery.tsx # SVG template previews
     Faq.tsx / Logo.tsx / Squircle.tsx
   lib/
-    places.ts / resolve-link.ts  # review-URL builder + link parsing
+    places.ts / resolve-link.ts  # ID-only Places search + URL parsing
     qr.ts / templates.ts         # QR generation + printable SVG templates
     rate-limit.ts
 ```
