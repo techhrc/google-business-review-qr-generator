@@ -86,7 +86,7 @@ npm run lint   # eslint
 
 | Route | Method | Description |
 |---|---|---|
-| `/api/search` | `GET ?name=&city=` | Places Text Search (ID-only field mask) → `{ placeId, reviewUrl }`. Requires `GOOGLE_PLACES_API_KEY`. |
+| `/api/search` | `POST { name, city }` | Places Text Search (ID-only field mask) → `{ placeId, reviewUrl }`. Requires `GOOGLE_PLACES_API_KEY`. |
 | `/api/resolve` | `POST { input }` | Resolves review links, Maps URLs (incl. `place_id` / `query_place_id` params), `maps.app.goo.gl` short links (via redirect), Maps place slugs (via search), and raw Place IDs → `{ placeId, reviewUrl }`. |
 
 Both are rate-limited to 20 requests/minute per IP. Errors never leak the API key or config details.

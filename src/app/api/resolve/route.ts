@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { resolveBusinessLink } from "@/lib/resolve-link";
-import { textSearch, reviewUrl } from "@/lib/places";
+import { textSearchTopId, reviewUrl } from "@/lib/places";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
@@ -27,17 +27,18 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  // A Maps link without an embedded Place ID: resolve the business name
-  // through the free text search and let the user pick the right one.
+  // A Maps link without an embedded Place ID: take the top match from the
+  // free ID-only text search. The user verifies it on Google's review
+  // page before printing.
   try {
-    const results = await textSearch(resolved.query);
-    if (results.length === 0) {
+    const placeId = await textSearchTopId(resolved.query);
+    if (!placeId) {
       return NextResponse.json(
         { error: `Couldn't match "${resolved.query}" to a business. Try the name search instead.` },
         { status: 404 }
       );
     }
-    return NextResponse.json({ results, query: resolved.query });
+    return NextResponse.json({ placeId, reviewUrl: reviewUrl(placeId), query: resolved.query });
   } catch {
     return NextResponse.json(
       { error: "Business lookup is temporarily unavailable. Please try again." },

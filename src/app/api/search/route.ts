@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { textSearch } from "@/lib/places";
+import { textSearchTopId, reviewUrl } from "@/lib/places";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
@@ -25,14 +25,16 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const results = await textSearch(`${name}, ${city}`);
-    if (results.length === 0) {
+    // ID-only text search (free tier): take the top match. The user
+    // verifies the business on Google's review page before printing.
+    const placeId = await textSearchTopId(`${name}, ${city}`);
+    if (!placeId) {
       return NextResponse.json(
-        { error: "No matching businesses found. Check the spelling of the name and city.", results: [] },
+        { error: "No matching businesses found. Check the spelling of the name and city." },
         { status: 404 }
       );
     }
-    return NextResponse.json({ results });
+    return NextResponse.json({ placeId, reviewUrl: reviewUrl(placeId) });
   } catch {
     return NextResponse.json(
       { error: "Business search is temporarily unavailable. Please try again." },

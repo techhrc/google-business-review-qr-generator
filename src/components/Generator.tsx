@@ -5,19 +5,18 @@ import { Rise, Morph } from "cube-motion/react";
 import { Squircle } from "./Squircle";
 import { qrDataUrl, downloadDataUrl } from "@/lib/qr";
 import { TEMPLATES, templateToPng, type TemplateDef } from "@/lib/templates";
-import type { PlaceCandidate } from "@/lib/places";
 
-type Phase = "input" | "loading" | "candidates" | "ready";
+type Phase = "input" | "loading" | "ready";
 
 interface SearchResponse {
-  results?: PlaceCandidate[];
+  placeId?: string;
+  reviewUrl?: string;
   error?: string;
 }
 
 interface ResolveResponse {
   placeId?: string;
   reviewUrl?: string;
-  results?: PlaceCandidate[];
   query?: string;
   error?: string;
 }
@@ -38,7 +37,6 @@ export function Generator() {
   const [city, setCity] = useState("");
   const [link, setLink] = useState("");
   const [phase, setPhase] = useState<Phase>("input");
-  const [candidates, setCandidates] = useState<PlaceCandidate[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [reviewUrl, setReviewUrl] = useState<string | null>(null);
   const [businessName, setBusinessName] = useState("");
@@ -61,9 +59,9 @@ export function Generator() {
         body: JSON.stringify({ name, city }),
       });
       const data = (await res.json()) as SearchResponse;
-      if (!res.ok) return fail(data.error || "Search failed. Try again.");
-      setCandidates(data.results ?? []);
-      setPhase("candidates");
+      if (!res.ok || !data.placeId || !data.reviewUrl)
+        return fail(data.error || "Search failed. Try again.");
+      await showResult(data.placeId, data.reviewUrl, name);
     } catch {
       fail("Couldn't reach the search service. Check your connection and try again.");
     }
@@ -80,13 +78,9 @@ export function Generator() {
         body: JSON.stringify({ input: link }),
       });
       const data = (await res.json()) as ResolveResponse;
-      if (!res.ok) return fail(data.error || "Couldn't read that link.");
-      if (data.reviewUrl && data.placeId) {
-        await showResult(data.placeId, data.reviewUrl, "");
-      } else if (data.results) {
-        setCandidates(data.results);
-        setPhase("candidates");
-      }
+      if (!res.ok || !data.placeId || !data.reviewUrl)
+        return fail(data.error || "Couldn't read that link.");
+      await showResult(data.placeId, data.reviewUrl, data.query ?? "");
     } catch {
       fail("Couldn't reach the lookup service. Check your connection and try again.");
     }
@@ -101,14 +95,8 @@ export function Generator() {
     document.getElementById("result")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  function choose(c: PlaceCandidate) {
-    const url = `https://search.google.com/local/writereview?placeid=${c.id}`;
-    void showResult(c.id, url, c.name);
-  }
-
   function reset() {
     setPhase("input");
-    setCandidates([]);
     setReviewUrl(null);
     setQr(null);
     setError(null);
@@ -247,30 +235,6 @@ export function Generator() {
               </p>
             )}
 
-            {phase === "candidates" && (
-              <div className="mt-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-                  Pick your business — {candidates.length} match{candidates.length === 1 ? "" : "es"}
-                </p>
-                <ul className="mt-3 space-y-2">
-                  {candidates.map((c) => (
-                    <li key={c.id}>
-                      <button
-                        onClick={() => choose(c)}
-                        className="flex w-full items-center justify-between gap-4 bg-wash px-5 py-4 text-left transition-colors hover:bg-[#e9edf1]"
-                        style={{ borderRadius: 16 }}
-                      >
-                        <span>
-                          <span className="block text-[15px] font-semibold text-ink">{c.name || "Unnamed business"}</span>
-                          {c.address && <span className="mt-0.5 block text-[13px] text-muted">{c.address}</span>}
-                        </span>
-                        <span className="shrink-0 text-sm font-semibold text-gblue">Use this →</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
         )}
 

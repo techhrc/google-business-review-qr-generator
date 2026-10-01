@@ -4,7 +4,7 @@ import { Squircle } from "./Squircle";
 const FAQS = [
   {
     q: "How do I create a QR code for my Google reviews?",
-    a: "Type your business name (and city) above, or paste your Google Maps link. Pick your business from the results, verify it opens the right review page, and download your QR code. The whole thing takes under a minute — no account, no cost.",
+    a: "Type your business name and city above, or paste your Google Maps link. We find your business's top match, you verify it opens the right review page, and then you download your QR code. The whole thing takes under a minute — no account, no cost.",
   },
   {
     q: "Is this Google review QR code generator really free?",

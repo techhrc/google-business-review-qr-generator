@@ -60,7 +60,10 @@ export async function resolveBusinessLink(input: string): Promise<ResolveResult>
     (host === "goo.gl" && url.pathname.startsWith("/maps"))
   ) {
     try {
-      const r = await fetch(finalUrl, { redirect: "follow" });
+      const r = await fetch(finalUrl, {
+        redirect: "follow",
+        signal: AbortSignal.timeout(8000),
+      });
       finalUrl = r.url;
     } catch {
       return {
