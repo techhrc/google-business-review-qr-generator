@@ -1,0 +1,34 @@
+# Google Review QR
+
+> Free Google review QR code generator. Search your business by name or paste
+> your Google Maps link — get a scannable QR code plus print-ready review
+> templates. No sign-up, no cost, nothing stored.
+
+## How to use
+
+1. Search your business name and city, or paste a Google Maps link
+   (review links, share links, short maps.app.goo.gl links, or raw Place IDs
+   all work).
+2. Pick your business from the results.
+3. Open the generated review link to verify it shows your business.
+4. Download the QR code as PNG, or download a print-ready template
+   (Review Card, Table Tent, Thank-You Card, Sticker).
+
+## Key facts
+
+- 100% free, unlimited, no account required.
+- QR codes are generated in the browser; no data leaves your device except
+  the business search, which goes to Google's Places API.
+- QR codes are static and never expire.
+- Customers scan with their phone camera — no app needed.
+- The review link format is
+  https://search.google.com/local/writereview?placeid=YOUR_PLACE_ID
+
+## FAQ
+
+- Is it really free? Yes — no limits, no watermark, no trial.
+- Do I need to sign up? No.
+- I don't know my Place ID — the tool finds it from your business name.
+- Will the QR expire? No, it's static.
+- Where should I display it? Counter, receipts, packaging, tables,
+  waiting areas, delivery bags.
