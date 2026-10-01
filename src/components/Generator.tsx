@@ -134,7 +134,7 @@ export function Generator() {
 
   return (
     <Rise as="div" targets="children" className="w-full">
-      <Squircle radius={28} className="border border-line bg-white p-6 shadow-xl shadow-slate-200/70 md:p-10">
+      <Squircle radius={28} className="bg-white p-6 shadow-xl shadow-slate-200/70 md:p-10">
         {/* Rainbow accent */}
         <div className="bg-google-rainbow -mx-6 -mt-6 h-1.5 md:-mx-10 md:-mt-10" aria-hidden="true" />
         {/* Tabs */}
@@ -154,7 +154,7 @@ export function Generator() {
                 reset();
               }}
               className={`flex-1 px-4 py-3 text-sm font-semibold transition-colors ${
-                tab === t.id ? "text-ink" : "text-muted/70 hover:text-ink"
+                tab === t.id ? "text-ink" : "text-muted hover:text-ink"
               }`}
             >
               <Morph active={tab === t.id} off={t.label} on={t.label} />
@@ -181,7 +181,7 @@ export function Generator() {
                     placeholder="Business name"
                     autoComplete="organization"
                     required
-                    className="w-full bg-wash px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:bg-white focus:ring-2 focus:ring-gblue/40"
+                    className="w-full bg-wash px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/80 focus:bg-white focus:ring-2 focus:ring-gblue/40"
                     style={{ borderRadius: 16 }}
                   />
                 </div>
@@ -196,7 +196,7 @@ export function Generator() {
                     placeholder="City"
                     autoComplete="address-level2"
                     required
-                    className="w-full bg-wash px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:bg-white focus:ring-2 focus:ring-gblue/40"
+                    className="w-full bg-wash px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/80 focus:bg-white focus:ring-2 focus:ring-gblue/40"
                     style={{ borderRadius: 16 }}
                   />
                 </div>
@@ -221,14 +221,13 @@ export function Generator() {
                     onChange={(e) => setLink(e.target.value)}
                     placeholder="Paste your Google Maps link, review link, or Place ID"
                     inputMode="url"
-                    className="w-full bg-wash px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:bg-white focus:ring-2 focus:ring-gblue/40"
+                    className="w-full bg-wash px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/80 focus:bg-white focus:ring-2 focus:ring-gblue/40"
                     style={{ borderRadius: 16 }}
                   />
                 </div>
                 <div className="flex flex-col gap-3 md:flex-row md:items-center">
                   <p className="flex-1 text-[13px] leading-relaxed text-muted">
-                    Works with review links, Maps share links (even short{" "}
-                    <span className="font-mono">maps.app.goo.gl</span> links), and raw Place IDs.
+                    Works with review links, Google Business (g.page) links, Maps share links, and raw Place IDs.
                   </p>
                   <button
                     type="submit"
@@ -243,7 +242,7 @@ export function Generator() {
             )}
 
             {error && (
-              <p role="alert" className="mt-4 border border-gred/30 bg-[#fce8e6] px-5 py-3 text-sm text-[#b3261e]" style={{ borderRadius: 14 }}>
+              <p role="alert" className="mt-4 bg-[#fce8e6] px-5 py-3 text-sm text-[#b3261e]" style={{ borderRadius: 14 }}>
                 {error}
               </p>
             )}
@@ -258,7 +257,7 @@ export function Generator() {
                     <li key={c.id}>
                       <button
                         onClick={() => choose(c)}
-                        className="flex w-full items-center justify-between gap-4 border border-line bg-white px-5 py-4 text-left transition-colors hover:border-gblue/60"
+                        className="flex w-full items-center justify-between gap-4 bg-wash px-5 py-4 text-left transition-colors hover:bg-[#e9edf1]"
                         style={{ borderRadius: 16 }}
                       >
                         <span>
@@ -280,7 +279,7 @@ export function Generator() {
             <div className="flex flex-col gap-8 lg:flex-row">
               {/* QR preview */}
               <div className="flex flex-col items-center gap-4">
-                <Squircle radius={24} className="border border-line bg-white p-4 shadow-sm">
+                <Squircle radius={24} className="bg-white p-4 shadow-md shadow-slate-200/70">
                   {qr ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={qr} alt="QR code linking to your Google review page" width={240} height={240} className="block h-60 w-60" />
@@ -327,20 +326,32 @@ export function Generator() {
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
                   placeholder="Your business name"
-                  className="mt-1 w-full bg-wash px-4 py-3 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:bg-white focus:ring-2 focus:ring-gblue/40"
+                  className="mt-1 w-full bg-wash px-4 py-3 text-[15px] text-ink outline-none placeholder:text-muted/80 focus:bg-white focus:ring-2 focus:ring-gblue/40"
                   style={{ borderRadius: 12 }}
                 />
 
                 <p className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-muted">Step 3 — Print-ready templates</p>
                 <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   {TEMPLATES.map((t) => (
-                    <div key={t.id} className="border border-line bg-wash p-4" style={{ borderRadius: 16 }}>
-                      <p className="text-[15px] font-semibold text-ink">{t.name}</p>
+                    <div key={t.id} className="bg-wash p-4" style={{ borderRadius: 16 }}>
+                      <div
+                        className="overflow-hidden bg-white"
+                        style={{ aspectRatio: `${t.width} / ${t.height}`, borderRadius: 10 }}
+                      >
+                        {qr && (
+                          <div
+                            className="h-full w-full [&>svg]:h-full [&>svg]:w-full"
+                            // SVG is generated locally from a static template — no user input inside.
+                            dangerouslySetInnerHTML={{ __html: t.build(qr, businessName || "Your Business") }}
+                          />
+                        )}
+                      </div>
+                      <p className="mt-3 text-[15px] font-semibold text-ink">{t.name}</p>
                       <p className="mt-1 text-[13px] leading-relaxed text-muted">{t.description}</p>
                       <button
                         onClick={() => handleDownloadTemplate(t)}
                         disabled={!qr || busyTemplate !== null}
-                        className="mt-3 w-full border border-gblue/40 bg-gblue/10 px-4 py-2.5 text-sm font-semibold text-gblue transition-colors hover:bg-gblue/20 disabled:opacity-50"
+                        className="mt-3 w-full bg-gblue px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#3367d6] disabled:opacity-50"
                         style={{ borderRadius: 10 }}
                       >
                         {busyTemplate === t.id ? "Rendering…" : "Download PNG"}

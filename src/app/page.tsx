@@ -111,7 +111,7 @@ export default function Home() {
         </section>
 
         {/* How it works */}
-        <section id="how-it-works" aria-labelledby="how-heading" className="border-y border-line bg-wash">
+        <section id="how-it-works" aria-labelledby="how-heading" className="bg-wash">
           <div className="mx-auto w-full max-w-6xl px-5 py-20 md:py-28">
             <Reveal as="div" targets="children">
               <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gblue">How it works</p>
@@ -121,7 +121,7 @@ export default function Home() {
               <ol className="mt-10 grid gap-5 md:grid-cols-3">
                 {STEPS.map((s) => (
                   <li key={s.n}>
-                    <Squircle radius={20} className="h-full border border-line bg-white p-7 shadow-sm">
+                    <Squircle radius={20} className="h-full bg-white p-7 shadow-md shadow-slate-200/70">
                       <p className="text-sm font-semibold text-gblue">{s.n}</p>
                       <h3 className="font-display mt-3 text-xl font-bold text-ink">{s.title}</h3>
                       <p className="mt-2 text-[15px] leading-relaxed text-muted">{s.text}</p>
@@ -136,7 +136,7 @@ export default function Home() {
         <TemplateGallery />
 
         {/* Benefits */}
-        <section aria-labelledby="why-heading" className="border-y border-line bg-wash">
+        <section aria-labelledby="why-heading" className="bg-wash">
           <div className="mx-auto w-full max-w-6xl px-5 py-20 md:py-28">
             <Reveal as="div" targets="children">
               <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gblue">Why it matters</p>
@@ -145,7 +145,7 @@ export default function Home() {
               </h2>
               <div className="mt-10 grid gap-5 md:grid-cols-2">
                 {BENEFITS.map((b) => (
-                  <Squircle key={b.title} radius={20} className="border border-line bg-white p-7 shadow-sm">
+                  <Squircle key={b.title} radius={20} className="bg-white p-7 shadow-md shadow-slate-200/70">
                     <h3 className="font-display text-lg font-bold text-ink">{b.title}</h3>
                     <p className="mt-2 text-[15px] leading-relaxed text-muted">{b.text}</p>
                   </Squircle>
@@ -160,7 +160,7 @@ export default function Home() {
         {/* Final CTA */}
         <section aria-label="Create your QR code" className="mx-auto w-full max-w-6xl px-5 pb-24">
           <Reveal as="div" targets="children">
-            <Squircle radius={28} className="overflow-hidden border border-line bg-white text-center shadow-sm">
+            <Squircle radius={28} className="overflow-hidden bg-white text-center shadow-md shadow-slate-200/70">
               <div className="bg-google-rainbow h-1.5 w-full" aria-hidden="true" />
               <div className="px-8 py-14 md:py-20">
                 <h2 className="font-display mx-auto max-w-xl text-3xl font-bold tracking-tight text-ink md:text-4xl">
@@ -182,7 +182,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-line">
+      <footer className="bg-wash">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-5 py-8 md:flex-row">
           <Logo size={24} />
           <p className="text-[13px] text-muted">

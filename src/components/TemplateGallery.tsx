@@ -36,7 +36,7 @@ export function TemplateGallery() {
         </p>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {TEMPLATES.map((t) => (
-            <Squircle key={t.id} radius={20} className="overflow-hidden border border-line bg-white shadow-sm">
+            <Squircle key={t.id} radius={20} className="overflow-hidden bg-white shadow-md shadow-slate-200/70">
               <div
                 className="w-full overflow-hidden bg-wash"
                 style={{ aspectRatio: `${t.width} / ${t.height}` }}
@@ -51,7 +51,7 @@ export function TemplateGallery() {
                   <div className="h-full w-full animate-pulse bg-slate-100" aria-label="Loading template preview" />
                 )}
               </div>
-              <div className="border-t border-line p-5">
+              <div className="p-5">
                 <p className="text-[15px] font-semibold text-ink">{t.name}</p>
                 <p className="mt-1 text-[13px] leading-relaxed text-muted">{t.description}</p>
               </div>
