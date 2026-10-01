@@ -17,15 +17,18 @@ export async function POST(req: NextRequest) {
   if (name.length < 2) {
     return NextResponse.json({ error: "Enter your business name to search." }, { status: 400 });
   }
+  if (city.length < 2) {
+    return NextResponse.json({ error: "Enter your city to narrow the search." }, { status: 400 });
+  }
   if (name.length > 200 || city.length > 200) {
     return NextResponse.json({ error: "Search text is too long." }, { status: 400 });
   }
 
   try {
-    const results = await textSearch(city ? `${name}, ${city}` : name);
+    const results = await textSearch(`${name}, ${city}`);
     if (results.length === 0) {
       return NextResponse.json(
-        { error: "No matching businesses found. Check the spelling or add the city.", results: [] },
+        { error: "No matching businesses found. Check the spelling of the name and city.", results: [] },
         { status: 404 }
       );
     }

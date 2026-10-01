@@ -178,23 +178,25 @@ export function Generator() {
                     id="biz-name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Business name — e.g. Bright Aadhar Seva Kendra"
+                    placeholder="Business name"
                     autoComplete="organization"
-                    className="w-full border border-line bg-white px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:border-gblue"
+                    required
+                    className="w-full bg-wash px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:bg-white focus:ring-2 focus:ring-gblue/40"
                     style={{ borderRadius: 16 }}
                   />
                 </div>
                 <div className="md:w-52">
                   <label htmlFor="biz-city" className="sr-only">
-                    City (optional)
+                    City
                   </label>
                   <input
                     id="biz-city"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    placeholder="City (optional)"
+                    placeholder="City"
                     autoComplete="address-level2"
-                    className="w-full border border-line bg-white px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:border-gblue"
+                    required
+                    className="w-full bg-wash px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:bg-white focus:ring-2 focus:ring-gblue/40"
                     style={{ borderRadius: 16 }}
                   />
                 </div>
@@ -219,7 +221,7 @@ export function Generator() {
                     onChange={(e) => setLink(e.target.value)}
                     placeholder="Paste your Google Maps link, review link, or Place ID"
                     inputMode="url"
-                    className="w-full border border-line bg-white px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:border-gblue"
+                    className="w-full bg-wash px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:bg-white focus:ring-2 focus:ring-gblue/40"
                     style={{ borderRadius: 16 }}
                   />
                 </div>
@@ -325,7 +327,7 @@ export function Generator() {
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
                   placeholder="Your business name"
-                  className="mt-1 w-full border border-line bg-white px-4 py-3 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:border-gblue"
+                  className="mt-1 w-full bg-wash px-4 py-3 text-[15px] text-ink outline-none placeholder:text-muted/60 focus:bg-white focus:ring-2 focus:ring-gblue/40"
                   style={{ borderRadius: 12 }}
                 />
 
