@@ -1,23 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { Rise, Morph } from "cube-motion/react";
+import { Rise } from "cube-motion/react";
 import { Squircle } from "./Squircle";
+import { LinkGuide } from "./LinkGuide";
 import { qrDataUrl, downloadDataUrl } from "@/lib/qr";
 import { TEMPLATES, templateToPng, type TemplateDef } from "@/lib/templates";
 
 type Phase = "input" | "loading" | "ready";
 
-interface SearchResponse {
-  placeId?: string;
-  reviewUrl?: string;
-  error?: string;
-}
-
 interface ResolveResponse {
   placeId?: string;
   reviewUrl?: string;
-  query?: string;
   error?: string;
 }
 
@@ -32,9 +26,6 @@ function filenameSafe(name: string): string {
 }
 
 export function Generator() {
-  const [tab, setTab] = useState<"search" | "link">("search");
-  const [name, setName] = useState("");
-  const [city, setCity] = useState("");
   const [link, setLink] = useState("");
   const [phase, setPhase] = useState<Phase>("input");
   const [error, setError] = useState<string | null>(null);
@@ -48,27 +39,9 @@ export function Generator() {
     setPhase("input");
   }
 
-  async function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setPhase("loading");
-    try {
-      const res = await fetch("/api/search", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, city }),
-      });
-      const data = (await res.json()) as SearchResponse;
-      if (!res.ok || !data.placeId || !data.reviewUrl)
-        return fail(data.error || "Search failed. Try again.");
-      await showResult(data.placeId, data.reviewUrl, name);
-    } catch {
-      fail("Couldn't reach the search service. Check your connection and try again.");
-    }
-  }
-
   async function handleResolve(e: React.FormEvent) {
     e.preventDefault();
+    if (!link.trim()) return fail("Paste your Google link first.");
     setError(null);
     setPhase("loading");
     try {
@@ -80,15 +53,14 @@ export function Generator() {
       const data = (await res.json()) as ResolveResponse;
       if (!res.ok || !data.placeId || !data.reviewUrl)
         return fail(data.error || "Couldn't read that link.");
-      await showResult(data.placeId, data.reviewUrl, data.query ?? "");
+      await showResult(data.placeId, data.reviewUrl);
     } catch {
       fail("Couldn't reach the lookup service. Check your connection and try again.");
     }
   }
 
-  async function showResult(placeId: string, url: string, nameGuess: string) {
+  async function showResult(placeId: string, url: string) {
     setReviewUrl(url);
-    setBusinessName(nameGuess);
     setPhase("ready");
     const dataUrl = await qrDataUrl(url, 1024);
     setQr(dataUrl);
@@ -125,109 +97,39 @@ export function Generator() {
       <Squircle radius={28} className="bg-white p-6 shadow-xl shadow-slate-200/70 md:p-10">
         {/* Rainbow accent */}
         <div className="bg-google-rainbow -mx-6 -mt-6 h-1.5 md:-mx-10 md:-mt-10" aria-hidden="true" />
-        {/* Tabs */}
-        <div className="flex gap-2 pt-6 md:pt-8" role="tablist" aria-label="How to find your business">
-          {(
-            [
-              { id: "search", label: "Search business" },
-              { id: "link", label: "Paste a link" },
-            ] as const
-          ).map((t) => (
-            <button
-              key={t.id}
-              role="tab"
-              aria-selected={tab === t.id}
-              onClick={() => {
-                setTab(t.id);
-                reset();
-              }}
-              className={`flex-1 px-4 py-3 text-sm font-semibold transition-colors ${
-                tab === t.id ? "text-ink" : "text-muted hover:text-ink"
-              }`}
-            >
-              <Morph active={tab === t.id} off={t.label} on={t.label} />
-              <span
-                className={`mt-2 block h-0.5 w-full ${tab === t.id ? "bg-gblue" : "bg-transparent"}`}
-                aria-hidden="true"
-              />
-            </button>
-          ))}
-        </div>
 
         {phase !== "ready" && (
-          <div className="mt-6">
-            {tab === "search" ? (
-              <form onSubmit={handleSearch} className="flex flex-col gap-3 md:flex-row">
-                <div className="flex-1">
-                  <label htmlFor="biz-name" className="sr-only">
-                    Business name
-                  </label>
-                  <input
-                    id="biz-name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Business name"
-                    autoComplete="organization"
-                    required
-                    className="w-full bg-wash px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/80 focus:bg-white focus:ring-2 focus:ring-gblue/40"
-                    style={{ borderRadius: 16 }}
-                  />
-                </div>
-                <div className="md:w-52">
-                  <label htmlFor="biz-city" className="sr-only">
-                    City
-                  </label>
-                  <input
-                    id="biz-city"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    placeholder="City"
-                    autoComplete="address-level2"
-                    required
-                    className="w-full bg-wash px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/80 focus:bg-white focus:ring-2 focus:ring-gblue/40"
-                    style={{ borderRadius: 16 }}
-                  />
-                </div>
+          <div className="mt-6 pt-6 md:pt-8">
+            <form onSubmit={handleResolve} className="flex flex-col gap-3">
+              <div>
+                <label htmlFor="biz-link" className="sr-only">
+                  Google Maps link, review link, or Place ID
+                </label>
+                <input
+                  id="biz-link"
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
+                  placeholder="Paste your Google Maps link, review link, or Place ID"
+                  inputMode="url"
+                  autoComplete="off"
+                  className="w-full bg-wash px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/80 focus:bg-white focus:ring-2 focus:ring-gblue/40"
+                  style={{ borderRadius: 16 }}
+                />
+              </div>
+              <div className="flex flex-col gap-3 md:flex-row md:items-center">
+                <p className="flex-1 text-[13px] leading-relaxed text-muted">
+                  Works with review links, Google Business (g.page / share.google) links, Maps share links, and raw Place IDs. Free forever — no sign-up.
+                </p>
                 <button
                   type="submit"
                   disabled={phase === "loading"}
                   className="bg-gblue px-7 py-4 text-[15px] font-semibold text-white transition hover:bg-[#3367d6] active:scale-[0.97] disabled:opacity-50"
                   style={{ borderRadius: 16 }}
                 >
-                  {phase === "loading" ? "Searching…" : "Find my business"}
+                  {phase === "loading" ? "Reading link…" : "Get review link"}
                 </button>
-              </form>
-            ) : (
-              <form onSubmit={handleResolve} className="flex flex-col gap-3">
-                <div>
-                  <label htmlFor="biz-link" className="sr-only">
-                    Google Maps link, review link, or Place ID
-                  </label>
-                  <input
-                    id="biz-link"
-                    value={link}
-                    onChange={(e) => setLink(e.target.value)}
-                    placeholder="Paste your Google Maps link, review link, or Place ID"
-                    inputMode="url"
-                    className="w-full bg-wash px-5 py-4 text-[15px] text-ink outline-none placeholder:text-muted/80 focus:bg-white focus:ring-2 focus:ring-gblue/40"
-                    style={{ borderRadius: 16 }}
-                  />
-                </div>
-                <div className="flex flex-col gap-3 md:flex-row md:items-center">
-                  <p className="flex-1 text-[13px] leading-relaxed text-muted">
-                    Works with review links, Google Business (g.page / share.google) links, Maps share links, and raw Place IDs.
-                  </p>
-                  <button
-                    type="submit"
-                    disabled={phase === "loading"}
-                    className="bg-gblue px-7 py-4 text-[15px] font-semibold text-white transition hover:bg-[#3367d6] active:scale-[0.97] disabled:opacity-50"
-                    style={{ borderRadius: 16 }}
-                  >
-                    {phase === "loading" ? "Reading link…" : "Get review link"}
-                  </button>
-                </div>
-              </form>
-            )}
+              </div>
+            </form>
 
             {error && (
               <p role="alert" className="mt-4 bg-[#fce8e6] px-5 py-3 text-sm text-[#b3261e]" style={{ borderRadius: 14 }}>
@@ -235,11 +137,12 @@ export function Generator() {
               </p>
             )}
 
+            <LinkGuide />
           </div>
         )}
 
         {phase === "ready" && reviewUrl && (
-          <div id="result" className="mt-6 scroll-mt-24">
+          <div id="result" className="mt-6 scroll-mt-24 pt-6 md:pt-8">
             <div className="flex flex-col gap-8 lg:flex-row">
               {/* QR preview */}
               <div className="flex flex-col items-center gap-4">

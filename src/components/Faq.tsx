@@ -4,11 +4,11 @@ import { Squircle } from "./Squircle";
 const FAQS = [
   {
     q: "How do I create a QR code for my Google reviews?",
-    a: "Type your business name and city above, or paste your Google Maps link. We find your business's top match, you verify it opens the right review page, and then you download your QR code. The whole thing takes under a minute — no account, no cost.",
+    a: "Paste your Google Maps or Google Business link above — the step-by-step guide shows exactly where to find it on web, iPhone, and Android. We turn it into your review link, you verify it opens the right review page, and then you download your QR code. The whole thing takes under a minute — no account, no cost.",
   },
   {
     q: "Is this Google review QR code generator really free?",
-    a: "Yes — completely free, with no limits. QR codes are generated in your browser, and the business lookup uses Google's free Places API tier. There is no sign-up, no trial, and no watermark on your downloads.",
+    a: "Yes — completely free, with no limits. QR codes are generated in your browser, and links are read directly — no paid APIs are used anywhere. There is no sign-up, no trial, and no watermark on your downloads.",
   },
   {
     q: "Do I need to sign up or create an account?",
@@ -16,7 +16,7 @@ const FAQS = [
   },
   {
     q: "I don't know my Google Place ID. Can I still use this?",
-    a: "That's exactly what this tool is for. Just search your business name and city, or paste any Google Maps link to your business — even a short maps.app.goo.gl link. The tool finds the Place ID and builds the review link for you.",
+    a: "That's exactly what this tool is for. You don't need to know it — just paste any Google Maps link to your business (even a short maps.app.goo.gl link) or your Google Business review link. The tool finds the Place ID and builds the review link for you.",
   },
   {
     q: "How do I know the QR code points to the right business?",

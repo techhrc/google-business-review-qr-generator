@@ -1,23 +1,28 @@
-// Parses whatever the business owner pastes and turns it into either a
-// Place ID (→ review link) or a search query (→ candidate list).
+// Parses whatever the business owner pastes and turns it into a Place ID
+// (→ review link). No Places API is used — every accepted input either
+// carries the Place ID directly or is a short link we follow server-side.
 //
 // Accepted inputs:
 //  1. A Google review link:        .../local/writereview?placeid=ChIJ...
 //  2. A Maps link with a Place ID:  /maps/place/?q=place_id:ChIJ...  or  ?query_place_id=ChIJ...
 //  3. A short link:                maps.app.goo.gl/xxxx  (resolved server-side)
 //  4. A Google Business link:      g.page/r/xxxx or share.google/xxxx  (short links, resolved server-side)
-//  5. A plain Maps place link:     /maps/place/<Business-Name>/...  (name → free text search)
-//  6. A raw Place ID:              ChIJ...
+//  5. A raw Place ID:              ChIJ...
+//
+// NOT accepted: plain /maps/place/<Business-Name>/ address-bar URLs — they
+// contain no Place ID. The error message guides the user to the Share button.
 
 export type ResolveResult =
   | { kind: "review"; placeId: string }
-  | { kind: "search"; query: string }
   | { kind: "error"; message: string };
 
 const RAW_ID_RE = /^(ChIJ[A-Za-z0-9_-]{10,})$/;
 const WRITEREVIEW_RE = /[?&]placeid=([A-Za-z0-9_-]+)/i;
 const PLACE_ID_PARAM_RE = /(?:place_id|query_place_id)[:=](ChIJ[A-Za-z0-9_-]+)/i;
 const MAPS_PLACE_SLUG_RE = /\/maps\/place\/([^/@?]+)/i;
+
+const SHARE_GUIDANCE =
+  "That link doesn't contain a business ID. In Google Maps, open your business, tap Share, and paste that link instead — the guide below shows how.";
 
 function isGoogleHost(host: string): boolean {
   return (
@@ -79,19 +84,18 @@ export async function resolveBusinessLink(input: string): Promise<ResolveResult>
   const paramMatch = finalUrl.match(PLACE_ID_PARAM_RE);
   if (paramMatch) return { kind: "review", placeId: paramMatch[1] };
 
-  // Plain /maps/place/<Name>/ links rarely carry a Place ID — turn the
-  // URL slug into a search query and let the free text search resolve it.
-  const slugMatch = finalUrl.match(MAPS_PLACE_SLUG_RE);
-  if (slugMatch) {
-    const name = decodeURIComponent(slugMatch[1]).replace(/\+/g, " ").trim();
-    if (name.length >= 2) return { kind: "search", query: name };
+  // Plain /maps/place/<Name>/ links carry no Place ID — guide the user to Share.
+  if (MAPS_PLACE_SLUG_RE.test(finalUrl)) {
+    return { kind: "error", message: SHARE_GUIDANCE };
   }
 
   const q = url.searchParams.get("q") || url.searchParams.get("query");
-  if (q && q.trim().length >= 2) return { kind: "search", query: q.trim() };
+  if (q && q.trim().length >= 2) {
+    return { kind: "error", message: SHARE_GUIDANCE };
+  }
 
   return {
     kind: "error",
-    message: "Couldn't find a business in that link. Try searching by business name instead.",
+    message: "Couldn't find a business in that link. Try the Share button in Google Maps instead — the guide below shows how.",
   };
 }

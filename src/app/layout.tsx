@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description:
-    "Create a free QR code for your Google reviews in seconds. Search your business by name or paste your Google Maps link — no sign-up, no cost, no watermark. Includes print-ready review templates.",
+    "Create a free QR code for your Google reviews in seconds. Paste your Google Maps link — no sign-up, no cost, no watermark. Includes print-ready review templates.",
   keywords: [
     "google review qr code generator",
     "free google review qr code",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: "Free Google Review QR Code Generator | No Sign-Up",
     description:
-      "Find your business by name or paste your Google Maps link — get a free QR code for your Google reviews plus print-ready templates. No account needed.",
+      "Paste your Google Maps link — get a free QR code for your Google reviews plus print-ready templates. No account needed.",
   },
   twitter: {
     card: "summary_large_image",

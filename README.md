@@ -21,13 +21,7 @@ https://search.google.com/local/writereview?placeid=YOUR_PLACE_ID
 
 ## Zero-cost design
 
-Google's Places **Text Search Essentials (IDs Only)** tier is unlimited and free. This project requests **only** the `places.id` field:
-
-```text
-places.id
-```
-
-It deliberately does **not** request `displayName` or `formattedAddress` — those flip the call into Text Search Pro (paid). The trade-off: search by exact business name + city, then verify on Google's review page before printing. This keeps the tool free forever, at any volume.
+The site is **link-only**: it accepts a Google Maps / Google Business / review link and turns it into a review QR code. A pasted link either carries the Place ID directly or is a short link followed server-side — both are free and need **no API key at all**. No Google Places API is used anywhere, so there is no billing, no quota, and no key to configure. This keeps the tool free forever, at any volume.
 
 ## Tech stack
 
@@ -52,10 +46,9 @@ Copy `.env.example` to `.env`:
 
 | Variable | Required | Description |
 |---|---|---|
-| `GOOGLE_PLACES_API_KEY` | Yes (for name search) | Google Cloud API key with **Places API (New)** → Text Search enabled. **Server-side only** — never prefix with `NEXT_PUBLIC_`. |
 | `NEXT_PUBLIC_SITE_URL` | Yes | Canonical site URL, e.g. `https://googlereviewqr.vercel.app`. Used for canonical tags, sitemap, and social metadata. |
 
-The **Paste a link** tab works without an API key (link resolution is keyless). Only the **Search business** tab needs the key.
+No API keys are needed — link resolution is fully keyless.
 
 ### Scripts
 
@@ -71,25 +64,16 @@ npm run lint   # eslint
 1. Push this repo to GitHub (or import the folder directly).
 2. In Vercel, **Add New → Project → Import** the repository.
 3. Add environment variables:
-   - `GOOGLE_PLACES_API_KEY` = your key
    - `NEXT_PUBLIC_SITE_URL` = your `https://<project>.vercel.app` URL
-4. Deploy. That's it — no build settings to change, no database to provision.
-
-### Getting a Google Places API key
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/) → create/select a project.
-2. **APIs & Services → Library** → enable **Places API (New)**.
-3. **APIs & Services → Credentials** → Create Credentials → API key.
-4. Restrict the key: under *API restrictions* select **Places API (New)** only. Add HTTP-referrer or IP restrictions for production.
+4. Deploy. That's it — no build settings to change, no database to provision, no API keys.
 
 ## API routes
 
 | Route | Method | Description |
 |---|---|---|
-| `/api/search` | `POST { name, city }` | Places Text Search (ID-only field mask) → `{ placeId, reviewUrl }`. Requires `GOOGLE_PLACES_API_KEY`. |
-| `/api/resolve` | `POST { input }` | Resolves review links, Maps URLs (incl. `place_id` / `query_place_id` params), `maps.app.goo.gl` short links (via redirect), Maps place slugs (via search), and raw Place IDs → `{ placeId, reviewUrl }`. |
+| `/api/resolve` | `POST { input }` | Resolves review links, Maps URLs (incl. `place_id` / `query_place_id` params), `maps.app.goo.gl` / `g.page` / `share.google` short links (via redirect), and raw Place IDs → `{ placeId, reviewUrl }`. |
 
-Both are rate-limited to 20 requests/minute per IP. Errors never leak the API key or config details.
+Rate-limited to 20 requests/minute per IP.
 
 ## SEO
 
@@ -108,14 +92,14 @@ src/
     layout.tsx          # metadata, JSON-LD, fonts
     opengraph-image.tsx # dynamic 1200×630 OG image
     robots.ts / sitemap.ts
-    api/search/route.ts   # Places ID-only text search
+    api/resolve/route.ts  # keyless link → Place ID resolver
     api/resolve/route.ts  # link / Place ID resolver
   components/
     Generator.tsx       # search + paste-link tabs, verify step, QR display, template downloads
     TemplateGallery.tsx # SVG template previews
     Faq.tsx / Logo.tsx / Squircle.tsx
   lib/
-    places.ts / resolve-link.ts  # Places API + URL parsing
+    places.ts / resolve-link.ts  # review-URL builder + link parsing
     qr.ts / templates.ts         # QR generation + printable SVG templates
     rate-limit.ts
 ```

@@ -11,8 +11,8 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://googlereviewqr.ver
 const STEPS = [
   {
     n: "01",
-    title: "Find your business",
-    text: "Search your business name and city, or paste any Google Maps link — even a short maps.app.goo.gl link. The tool resolves it to your Google Place ID for free.",
+    title: "Paste your Google link",
+    text: "Copy your link from Google Maps (Share button) or your Google Business dashboard (Share review form) — the step-by-step guide below shows how on web, iPhone, and Android. Paste it above.",
   },
   {
     n: "02",
@@ -63,7 +63,7 @@ export default function Home() {
                 operatingSystem: "Any",
                 offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
                 description:
-                  "Free Google review QR code generator. Search your business by name or paste your Google Maps link to create a scannable QR code and print-ready review templates. No sign-up.",
+                  "Free Google review QR code generator. Paste your Google Maps link to create a scannable QR code and print-ready review templates. No sign-up, no cost."
               },
               {
                 "@type": "Organization",
@@ -101,8 +101,8 @@ export default function Home() {
               Free <span className="text-google-gradient">Google Review</span> QR Code Generator
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-[16px] leading-relaxed text-muted md:text-lg">
-              Turn happy customers into Google reviews. Find your business by name, or paste your Google Maps
-              link — get a scannable QR code and print-ready review cards in under a minute.
+              Turn happy customers into Google reviews. Paste your Google Maps link
+              — get a scannable QR code and print-ready review cards in under a minute.
             </p>
           </Rise>
           <div className="mx-auto mt-10 max-w-4xl">
