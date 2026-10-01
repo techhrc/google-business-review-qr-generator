@@ -1,20 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Google_Sans_Flex, Roboto, Roboto_Mono } from "next/font/google";
 import { CornersInit } from "@/components/Squircle";
 import "./globals.css";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://googlereviewqr.vercel.app";
 const SITE_NAME = "Google Review QR";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
-const spaceGrotesk = Space_Grotesk({
+const googleSans = Google_Sans_Flex({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-google-sans",
   display: "swap",
 });
-const jetbrainsMono = JetBrains_Mono({
+const roboto = Roboto({
   subsets: ["latin"],
-  variable: "--font-mono",
+  weight: ["400", "500", "700"],
+  variable: "--font-roboto",
+  display: "swap",
+});
+const robotoMono = Roboto_Mono({
+  subsets: ["latin"],
+  variable: "--font-roboto-mono",
   display: "swap",
 });
 
@@ -60,15 +65,18 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0c10",
+  themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
-      <body className="bg-ink font-sans text-white antialiased">
+    <html
+      lang="en"
+      className={`${googleSans.variable} ${roboto.variable} ${robotoMono.variable}`}
+    >
+      <body className="bg-white font-sans text-ink antialiased">
         <CornersInit />
         {children}
       </body>

@@ -1,12 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-display), var(--font-sans), ui-sans-serif, sans-serif;
-  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-google-sans), "Google Sans Flex", "Google Sans", Roboto,
+    ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-google-sans), "Google Sans Flex", "Google Sans", Roboto,
+    ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-roboto-mono), ui-monospace, SFMono-Regular, monospace;
 
-  --color-ink: #0a0c10;
-  --color-panel: #12151d;
+  /* Google brand palette */
+  --color-gblue: #4285f4;
+  --color-gred: #ea4335;
+  --color-gyellow: #fbbc05;
+  --color-ggreen: #34a853;
+
+  /* Light theme surfaces */
+  --color-ink: #202124;
+  --color-muted: #5f6368;
+  --color-line: #dadce0;
+  --color-paper: #ffffff;
+  --color-wash: #f8f9fa;
   --color-accent: #4285f4;
 }
 
@@ -15,18 +27,45 @@ html {
 }
 
 body {
-  background-color: #0a0c10;
-  /* Subtle depth without imagery: a faint radial glow up top */
-  background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(66, 133, 244, 0.08), transparent);
+  background-color: #ffffff;
+  color: #202124;
+  /* Airy Google-style wash: whisper-soft brand tints up top */
+  background-image:
+    radial-gradient(ellipse 60% 40% at 15% 0%, rgba(66, 133, 244, 0.07), transparent),
+    radial-gradient(ellipse 50% 35% at 85% 0%, rgba(234, 67, 53, 0.05), transparent),
+    radial-gradient(ellipse 45% 30% at 50% 0%, rgba(251, 188, 5, 0.05), transparent);
   background-repeat: no-repeat;
 }
 
 ::selection {
-  background: rgba(66, 133, 244, 0.35);
+  background: rgba(66, 133, 244, 0.25);
 }
 
 /* cube-motion respects reduced-motion internally; keep focus visible for a11y */
 :focus-visible {
   outline: 2px solid #4285f4;
   outline-offset: 2px;
+}
+
+/* Google brand gradient — smooth blend like the current Google "G" */
+.bg-google-gradient {
+  background-image: linear-gradient(115deg, #4285f4 0%, #ea4335 38%, #fbbc05 68%, #34a853 100%);
+}
+
+.text-google-gradient {
+  background-image: linear-gradient(100deg, #4285f4 5%, #ea4335 40%, #e37400 62%, #34a853 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Hard-stop rainbow bar (template-style), for dividers and accents */
+.bg-google-rainbow {
+  background-image: linear-gradient(
+    90deg,
+    #ea4335 0 25%,
+    #4285f4 25% 50%,
+    #fbbc05 50% 75%,
+    #34a853 75% 100%
+  );
 }

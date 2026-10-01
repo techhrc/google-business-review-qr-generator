@@ -26,18 +26,21 @@ export function TemplateGallery() {
   return (
     <section id="templates" aria-labelledby="templates-heading" className="mx-auto w-full max-w-6xl px-5 py-20 md:py-28">
       <Reveal as="div" targets="children">
-        <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">Templates</p>
-        <h2 id="templates-heading" className="font-display mt-3 max-w-2xl text-3xl font-bold tracking-tight text-white md:text-4xl">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gblue">Templates</p>
+        <h2 id="templates-heading" className="font-display mt-3 max-w-2xl text-3xl font-bold tracking-tight text-ink md:text-4xl">
           Not just a QR — print-ready review cards
         </h2>
-        <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-white/55">
+        <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted">
           A bare QR code gets ignored. These cards pair your code with a clear call to action, sized for the
-          counter, the table, the receipt, and the window. Download any of them as a high-resolution PNG.
+          counter, the receipt, and the window. Download any of them as a high-resolution PNG.
         </p>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {TEMPLATES.map((t) => (
-            <Squircle key={t.id} radius={20} className="overflow-hidden border border-white/10 bg-panel">
-              <div className="aspect-[4/5] w-full overflow-hidden bg-ink/60">
+            <Squircle key={t.id} radius={20} className="overflow-hidden border border-line bg-white shadow-sm">
+              <div
+                className="w-full overflow-hidden bg-wash"
+                style={{ aspectRatio: `${t.width} / ${t.height}` }}
+              >
                 {sampleQr ? (
                   <div
                     className="h-full w-full [&>svg]:h-full [&>svg]:w-full"
@@ -45,12 +48,12 @@ export function TemplateGallery() {
                     dangerouslySetInnerHTML={{ __html: t.build(sampleQr, "Sample Business") }}
                   />
                 ) : (
-                  <div className="h-full w-full animate-pulse bg-white/5" aria-label="Loading template preview" />
+                  <div className="h-full w-full animate-pulse bg-slate-100" aria-label="Loading template preview" />
                 )}
               </div>
-              <div className="p-5">
-                <p className="text-[15px] font-semibold text-white">{t.name}</p>
-                <p className="mt-1 text-[13px] leading-relaxed text-white/45">{t.description}</p>
+              <div className="border-t border-line p-5">
+                <p className="text-[15px] font-semibold text-ink">{t.name}</p>
+                <p className="mt-1 text-[13px] leading-relaxed text-muted">{t.description}</p>
               </div>
             </Squircle>
           ))}

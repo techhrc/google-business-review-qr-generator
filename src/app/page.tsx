@@ -22,7 +22,7 @@ const STEPS = [
   {
     n: "03",
     title: "Download & display",
-    text: "Grab the QR as a PNG or pick a print-ready template — review card, table tent, thank-you card, or sticker. Put it where customers already look.",
+    text: "Grab the QR as a PNG or pick a print-ready template — counter display, thank-you card, or sticker. Put it where customers already look.",
   },
 ];
 
@@ -37,7 +37,7 @@ const BENEFITS = [
   },
   {
     title: "Static codes never expire",
-    text: "Unlike dynamic QR services that stop working when you stop paying, these codes encode your Google review link directly. Print a thousand table tents with confidence.",
+    text: "Unlike dynamic QR services that stop working when you stop paying, these codes encode your Google review link directly. Print a thousand stickers with confidence.",
   },
   {
     title: "Free, private, no sign-up",
@@ -83,10 +83,10 @@ export default function Home() {
         <Link href="/" aria-label="Google Review QR — home">
           <Logo />
         </Link>
-        <nav aria-label="Page sections" className="hidden items-center gap-8 text-sm text-white/55 md:flex">
-          <a href="#how-it-works" className="transition-colors hover:text-white">How it works</a>
-          <a href="#templates" className="transition-colors hover:text-white">Templates</a>
-          <a href="#faq" className="transition-colors hover:text-white">FAQ</a>
+        <nav aria-label="Page sections" className="hidden items-center gap-8 text-sm text-muted md:flex">
+          <a href="#how-it-works" className="transition-colors hover:text-ink">How it works</a>
+          <a href="#templates" className="transition-colors hover:text-ink">Templates</a>
+          <a href="#faq" className="transition-colors hover:text-ink">FAQ</a>
         </nav>
       </header>
 
@@ -94,13 +94,13 @@ export default function Home() {
         {/* Hero + tool */}
         <section aria-labelledby="page-heading" className="mx-auto w-full max-w-6xl px-5 pb-16 pt-8 md:pt-14">
           <Rise as="div" targets="children" className="mx-auto max-w-3xl text-center">
-            <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gblue">
               Free · No sign-up · No watermark
             </p>
-            <h1 id="page-heading" className="font-display mt-4 text-4xl font-bold leading-[1.05] tracking-tight text-white md:text-6xl">
-              Free Google Review QR Code Generator
+            <h1 id="page-heading" className="font-display mt-4 text-4xl font-bold leading-[1.05] tracking-tight text-ink md:text-6xl">
+              Free <span className="text-google-gradient">Google Review</span> QR Code Generator
             </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-[16px] leading-relaxed text-white/60 md:text-lg">
+            <p className="mx-auto mt-5 max-w-2xl text-[16px] leading-relaxed text-muted md:text-lg">
               Turn happy customers into Google reviews. Find your business by name, or paste your Google Maps
               link — get a scannable QR code and print-ready review cards in under a minute.
             </p>
@@ -111,20 +111,20 @@ export default function Home() {
         </section>
 
         {/* How it works */}
-        <section id="how-it-works" aria-labelledby="how-heading" className="border-y border-white/5 bg-white/[0.015]">
+        <section id="how-it-works" aria-labelledby="how-heading" className="border-y border-line bg-wash">
           <div className="mx-auto w-full max-w-6xl px-5 py-20 md:py-28">
             <Reveal as="div" targets="children">
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">How it works</p>
-              <h2 id="how-heading" className="font-display mt-3 max-w-2xl text-3xl font-bold tracking-tight text-white md:text-4xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gblue">How it works</p>
+              <h2 id="how-heading" className="font-display mt-3 max-w-2xl text-3xl font-bold tracking-tight text-ink md:text-4xl">
                 From business name to printed QR in three steps
               </h2>
               <ol className="mt-10 grid gap-5 md:grid-cols-3">
                 {STEPS.map((s) => (
                   <li key={s.n}>
-                    <Squircle radius={20} className="h-full border border-white/10 bg-panel p-7">
-                      <p className="font-mono text-sm text-accent">{s.n}</p>
-                      <h3 className="font-display mt-3 text-xl font-bold text-white">{s.title}</h3>
-                      <p className="mt-2 text-[15px] leading-relaxed text-white/55">{s.text}</p>
+                    <Squircle radius={20} className="h-full border border-line bg-white p-7 shadow-sm">
+                      <p className="text-sm font-semibold text-gblue">{s.n}</p>
+                      <h3 className="font-display mt-3 text-xl font-bold text-ink">{s.title}</h3>
+                      <p className="mt-2 text-[15px] leading-relaxed text-muted">{s.text}</p>
                     </Squircle>
                   </li>
                 ))}
@@ -136,18 +136,18 @@ export default function Home() {
         <TemplateGallery />
 
         {/* Benefits */}
-        <section aria-labelledby="why-heading" className="border-y border-white/5 bg-white/[0.015]">
+        <section aria-labelledby="why-heading" className="border-y border-line bg-wash">
           <div className="mx-auto w-full max-w-6xl px-5 py-20 md:py-28">
             <Reveal as="div" targets="children">
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">Why it matters</p>
-              <h2 id="why-heading" className="font-display mt-3 max-w-2xl text-3xl font-bold tracking-tight text-white md:text-4xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gblue">Why it matters</p>
+              <h2 id="why-heading" className="font-display mt-3 max-w-2xl text-3xl font-bold tracking-tight text-ink md:text-4xl">
                 Why businesses put review QR codes everywhere
               </h2>
               <div className="mt-10 grid gap-5 md:grid-cols-2">
                 {BENEFITS.map((b) => (
-                  <Squircle key={b.title} radius={20} className="border border-white/10 bg-panel p-7">
-                    <h3 className="font-display text-lg font-bold text-white">{b.title}</h3>
-                    <p className="mt-2 text-[15px] leading-relaxed text-white/55">{b.text}</p>
+                  <Squircle key={b.title} radius={20} className="border border-line bg-white p-7 shadow-sm">
+                    <h3 className="font-display text-lg font-bold text-ink">{b.title}</h3>
+                    <p className="mt-2 text-[15px] leading-relaxed text-muted">{b.text}</p>
                   </Squircle>
                 ))}
               </div>
@@ -160,29 +160,32 @@ export default function Home() {
         {/* Final CTA */}
         <section aria-label="Create your QR code" className="mx-auto w-full max-w-6xl px-5 pb-24">
           <Reveal as="div" targets="children">
-            <Squircle radius={28} className="border border-white/10 bg-gradient-to-br from-panel to-ink px-8 py-14 text-center md:py-20">
-              <h2 className="font-display mx-auto max-w-xl text-3xl font-bold tracking-tight text-white md:text-4xl">
-                Your next hundred reviews start with one scan
-              </h2>
-              <p className="mx-auto mt-4 max-w-lg text-[15px] text-white/55">
-                Free forever, no account, nothing stored. Make your QR code now.
-              </p>
-              <a
-                href="#page-heading"
-                className="mt-8 inline-block bg-accent px-8 py-4 text-[15px] font-semibold text-white transition-transform active:scale-[0.97]"
-                style={{ borderRadius: 16 }}
-              >
-                Create my QR code
-              </a>
+            <Squircle radius={28} className="overflow-hidden border border-line bg-white text-center shadow-sm">
+              <div className="bg-google-rainbow h-1.5 w-full" aria-hidden="true" />
+              <div className="px-8 py-14 md:py-20">
+                <h2 className="font-display mx-auto max-w-xl text-3xl font-bold tracking-tight text-ink md:text-4xl">
+                  Your next hundred reviews start with one scan
+                </h2>
+                <p className="mx-auto mt-4 max-w-lg text-[15px] text-muted">
+                  Free forever, no account, nothing stored. Make your QR code now.
+                </p>
+                <a
+                  href="#page-heading"
+                  className="mt-8 inline-block bg-gblue px-8 py-4 text-[15px] font-semibold text-white transition hover:bg-[#3367d6] active:scale-[0.97]"
+                  style={{ borderRadius: 16 }}
+                >
+                  Create my QR code
+                </a>
+              </div>
             </Squircle>
           </Reveal>
         </section>
       </main>
 
-      <footer className="border-t border-white/5">
+      <footer className="border-t border-line">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-5 py-8 md:flex-row">
           <Logo size={24} />
-          <p className="text-[13px] text-white/35">
+          <p className="text-[13px] text-muted">
             Free Google review QR codes for local businesses. Not affiliated with Google LLC.
           </p>
         </div>

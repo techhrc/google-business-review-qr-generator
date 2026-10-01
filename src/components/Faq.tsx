@@ -36,25 +36,31 @@ const FAQS = [
   },
 ];
 
+export const FAQ_JSON_LD = FAQS.map((item) => ({
+  "@type": "Question",
+  name: item.q,
+  acceptedAnswer: { "@type": "Answer", text: item.a },
+}));
+
 export function Faq() {
   return (
     <section id="faq" aria-labelledby="faq-heading" className="mx-auto w-full max-w-3xl px-5 py-20 md:py-28">
       <Reveal as="div" targets="children">
-        <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">FAQ</p>
-        <h2 id="faq-heading" className="font-display mt-3 text-3xl font-bold tracking-tight text-white md:text-4xl">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gblue">FAQ</p>
+        <h2 id="faq-heading" className="font-display mt-3 text-3xl font-bold tracking-tight text-ink md:text-4xl">
           Questions, answered
         </h2>
         <div className="mt-8 space-y-3">
           {FAQS.map((item) => (
-            <Squircle key={item.q} radius={18} className="border border-white/10 bg-panel px-6 py-1">
+            <Squircle key={item.q} radius={18} className="border border-line bg-white px-6 py-1 shadow-sm">
               <details className="group py-4">
-                <summary className="cursor-pointer list-none text-[15px] font-semibold text-white/90 marker:hidden [&::-webkit-details-marker]:hidden">
+                <summary className="cursor-pointer list-none text-[15px] font-semibold text-ink marker:hidden [&::-webkit-details-marker]:hidden">
                   <span className="flex items-center justify-between gap-4">
                     {item.q}
-                    <span className="text-accent transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                    <span className="text-gblue transition-transform group-open:rotate-45" aria-hidden="true">+</span>
                   </span>
                 </summary>
-                <p className="mt-3 text-[15px] leading-relaxed text-white/60">{item.a}</p>
+                <p className="mt-3 text-[15px] leading-relaxed text-muted">{item.a}</p>
               </details>
             </Squircle>
           ))}
@@ -63,9 +69,3 @@ export function Faq() {
     </section>
   );
 }
-
-export const FAQ_JSON_LD = FAQS.map((item) => ({
-  "@type": "Question",
-  name: item.q,
-  acceptedAnswer: { "@type": "Answer", text: item.a },
-}));
