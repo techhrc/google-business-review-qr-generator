@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), var(--font-sans), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --color-ink: #0a0c10;
+  --color-panel: #12151d;
+  --color-accent: #4285f4;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0a0c10;
+  /* Subtle depth without imagery: a faint radial glow up top */
+  background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(66, 133, 244, 0.08), transparent);
+  background-repeat: no-repeat;
+}
+
+::selection {
+  background: rgba(66, 133, 244, 0.35);
+}
+
+/* cube-motion respects reduced-motion internally; keep focus visible for a11y */
+:focus-visible {
+  outline: 2px solid #4285f4;
+  outline-offset: 2px;
+}
