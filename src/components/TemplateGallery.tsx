@@ -36,9 +36,9 @@ export function TemplateGallery() {
         </p>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {TEMPLATES.map((t) => (
-            <Squircle key={t.id} radius={20} className="overflow-hidden bg-white shadow-md shadow-slate-200/70">
+            <Squircle key={t.id} radius={20} className="overflow-hidden bg-wash shadow-md shadow-slate-200/70">
               <div
-                className="w-full overflow-hidden bg-wash"
+                className="w-full overflow-hidden bg-white"
                 style={{ aspectRatio: `${t.width} / ${t.height}` }}
               >
                 {sampleQr ? (

@@ -5,7 +5,7 @@
 //  1. A Google review link:        .../local/writereview?placeid=ChIJ...
 //  2. A Maps link with a Place ID:  /maps/place/?q=place_id:ChIJ...  or  ?query_place_id=ChIJ...
 //  3. A short link:                maps.app.goo.gl/xxxx  (resolved server-side)
-//  4. A Google Business link:      g.page/r/xxxx  (short link from Business Profile, resolved server-side)
+//  4. A Google Business link:      g.page/r/xxxx or share.google/xxxx  (short links, resolved server-side)
 //  5. A plain Maps place link:     /maps/place/<Business-Name>/...  (name → free text search)
 //  6. A raw Place ID:              ChIJ...
 
@@ -26,7 +26,8 @@ function isGoogleHost(host: string): boolean {
     host === "maps.app.goo.gl" ||
     host === "goo.gl" ||
     host === "g.page" ||
-    host === "business.google.com"
+    host === "business.google.com" ||
+    host === "share.google"
   );
 }
 
@@ -47,12 +48,17 @@ export async function resolveBusinessLink(input: string): Promise<ResolveResult>
 
   const host = url.hostname.toLowerCase();
   if (!isGoogleHost(host)) {
-    return { kind: "error", message: "Please paste a Google Maps or Google review link." };
+    return { kind: "error", message: "Please paste a Google Maps, Google Business, or review link." };
   }
 
-  // Resolve short links (maps.app.goo.gl / goo.gl/maps / g.page) to the full URL.
+  // Resolve short links (maps.app.goo.gl / goo.gl/maps / g.page / share.google) to the full URL.
   let finalUrl = url.toString();
-  if (host === "maps.app.goo.gl" || host === "g.page" || (host === "goo.gl" && url.pathname.startsWith("/maps"))) {
+  if (
+    host === "maps.app.goo.gl" ||
+    host === "g.page" ||
+    host === "share.google" ||
+    (host === "goo.gl" && url.pathname.startsWith("/maps"))
+  ) {
     try {
       const r = await fetch(finalUrl, { redirect: "follow" });
       finalUrl = r.url;

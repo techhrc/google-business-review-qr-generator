@@ -52,7 +52,7 @@ export function Faq() {
         </h2>
         <div className="mt-8 space-y-3">
           {FAQS.map((item) => (
-            <Squircle key={item.q} radius={18} className="bg-white px-6 py-1 shadow-md shadow-slate-200/70">
+            <Squircle key={item.q} radius={18} className="bg-wash px-6 py-1 shadow-md shadow-slate-200/70">
               <details className="group py-4">
                 <summary className="cursor-pointer list-none text-[15px] font-semibold text-ink marker:hidden [&::-webkit-details-marker]:hidden">
                   <span className="flex items-center justify-between gap-4">

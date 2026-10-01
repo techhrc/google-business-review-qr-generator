@@ -160,7 +160,7 @@ export default function Home() {
         {/* Final CTA */}
         <section aria-label="Create your QR code" className="mx-auto w-full max-w-6xl px-5 pb-24">
           <Reveal as="div" targets="children">
-            <Squircle radius={28} className="overflow-hidden bg-white text-center shadow-md shadow-slate-200/70">
+            <Squircle radius={28} className="overflow-hidden bg-wash text-center shadow-md shadow-slate-200/70">
               <div className="bg-google-rainbow h-1.5 w-full" aria-hidden="true" />
               <div className="px-8 py-14 md:py-20">
                 <h2 className="font-display mx-auto max-w-xl text-3xl font-bold tracking-tight text-ink md:text-4xl">

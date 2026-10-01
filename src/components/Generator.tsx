@@ -227,7 +227,7 @@ export function Generator() {
                 </div>
                 <div className="flex flex-col gap-3 md:flex-row md:items-center">
                   <p className="flex-1 text-[13px] leading-relaxed text-muted">
-                    Works with review links, Google Business (g.page) links, Maps share links, and raw Place IDs.
+                    Works with review links, Google Business (g.page / share.google) links, Maps share links, and raw Place IDs.
                   </p>
                   <button
                     type="submit"
